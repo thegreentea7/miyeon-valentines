@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MY, collection – рандомные валентинки ♡</title>
+<style>
+:root{
+  --bg1:#FFEAF2; --bg2:#FFF6FA; --ink:#3A2A2E;
+  --card:#ffffff; --pink:#FF6FAE; --pink2:#FF9FC6;
+  --radius:22px;
+}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:linear-gradient(180deg,var(--bg2),var(--bg1));
+  display:flex; align-items:center; justify-content:center;
+  padding:30px;
+}
+.card{
+  width:min(950px,100%);
+  background:var(--card);
+  border-radius:var(--radius);
+  padding:28px;
+  box-shadow:0 25px 60px rgba(0,0,0,.08);
+}
+h1{margin:0 0 8px 0;font-size:20px;}
+.sub{font-size:13px;margin-bottom:24px;color:#666;}
+
+.layout{
+  display:grid;
+  grid-template-columns: 420px 1fr;
+  gap:28px;
+  align-items:start;
+}
+
+@media (max-width: 820px){
+  .layout{grid-template-columns:1fr;}
+}
+
+.art img{
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  box-shadow:0 18px 45px rgba(0,0,0,.12);
+}
+
+.vtext{
+  white-space:pre-wrap;
+  font-size:16px;
+  line-height:1.6;
+}
+
+.vmeta{
+  margin-top:10px;
+  font-size:14px;
+  color:var(--pink);
+  font-weight:600;
+}
+
+button{
+  margin-top:24px;
+  border:none;
+  cursor:pointer;
+  padding:12px 20px;
+  border-radius:14px;
+  font-weight:700;
+  color:#fff;
+  background:linear-gradient(135deg,var(--pink),var(--pink2));
+  font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h1>Рандомная валентинка ♡</h1>
+  <p class="sub">Нажимай «Ещё!» – выпадет другая валентинка ✨</p>
+
+  <div class="layout">
+    <div class="art">
+      <img id="vImg" alt="Валентинка">
+    </div>
+
+    <div>
+      <div class="vtext" id="vText"></div>
+      <div class="vmeta" id="vMeta"></div>
+      <button onclick="nextValentine()">Ещё! ♡</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const VALENTINES = [{"img": "https://i.postimg.cc/Nf4KXWqy/Miencik.jpg", "from": "Миён", "text": "Небобо~ 💖\n\nТы сегодня думал(а) обо мне? >_<\n\nПотому что я думаю о тебе ♡\n\nКогда ты улыбаешься, мне становится тепло… правда ♡\nДавай сегодня проведём этот день вместе, даже если нас разделяет расстояние~\n\nПожалуйста, оставайся здоровым(ой), хорошо кушай и не забывай, что я всегда на твоей стороне ♥️\nЯ очень сильно люблю тебя!!!\n\nМён♡-"}, {"img": "https://i.postimg.cc/kMyJYKjk/Minni.jpg", "from": "Минни", "text": "Небобо~\n\nС Днём святого Валентина ♡\n\nНадеюсь, сегодня ты проведёшь день спокойно и счастливо~\nЕсли вдруг станет немного грустно, просто вспомни, что мы рядом\n\nДавай будем вместе ещё очень долго и создадим много тёплых воспоминаний\nЯ люблю тебя ♡"}, {"img": "https://i.postimg.cc/bvb8xtSX/Soen.jpg", "from": "Соён", "text": "Neverland ♡\n\nСегодня особенный день, да?\n\nСпасибо, что всегда веришь в нас и поддерживаешь\nЯ буду работать ещё усерднее, чтобы ты мог(ла) гордиться нами\n\nБудь здоров(а) и счастлив(а)\n\nИ если этот День святого Валентина станет для тебя по-настоящему радостным…\nя даже могу провести овощной мукбанг ♡\n\nДа, я серьёзно.\n\nЛюблю тебя ♡"}, {"img": "https://i.postimg.cc/W4Rc11WD/Uci.jpg", "from": "Юци", "text": "Небобо~!!! 💕\n\nС Днём святого Валентинаааа~\nТы сегодня улыбался(ась)? Ты обязан(а) улыбаться~\n\nПотому что я хочу, чтобы ты был(а) самым счастливым человеком~\nЕсли кто-то расстроит тебя – скажи мне! Я всё решу~\n\nДавай осуществим ещё больше мечт вместе ♡\nЛюблю тебя~ чмок ♥️"}, {"img": "https://i.postimg.cc/cCkVyxtK/Su.jpg", "from": "Шухуа", "text": "Эй Небобо~ ♡\n\nС праздником~\n\nТы хорошо поел(а) сегодня? Не пропускай приёмы пищи~\nИ не засиживайся допоздна, я переживаю\n\nПожалуйста, оставайся здоровым(ой) и улыбайся чаще~\nЯ всегда рядом с тобой\n\nЛюблю тебя ♡"}, {"img": "https://i.postimg.cc/7YcpKLkv/gruppa-vsa.jpg", "from": "MY, collection", "text": "💘 Valentine’s Day в MY, collection\n\nСпасибо, что участвовали в играх, выбирали пары, голосовали и писали валентинки 💚\n\nЭтот паблик существует благодаря вам.\n\nДавайте будем вместе ещё очень-очень долго собирать карточки, смеяться и любить i-dle ♡"}];
+
+function nextValentine(){
+  const i = Math.floor(Math.random()*VALENTINES.length);
+  const v = VALENTINES[i];
+  document.getElementById("vImg").src = v.img;
+  document.getElementById("vText").textContent = v.text;
+  document.getElementById("vMeta").textContent = "– " + v.from;
+}
+
+nextValentine();
+</script>
+
+</body>
+</html>
